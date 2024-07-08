@@ -1,46 +1,34 @@
-import { Component } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { ɵPendingTasks as PendingTasks } from '@angular/core'
+
 
 @Component({
   selector: 'app-home',
   standalone: true,
+  imports: [AsyncPipe],
   template: `
     <div>
-      <a href="https://analogjs.org/" target="_blank">
-        <img alt="Analog Logo" class="logo analog" src="/analog.svg" />
-      </a>
+      <p>testing 123 - {{ data | async }}</p>
     </div>
-
-    <h2>Analog</h2>
-
-    <h3>The fullstack meta-framework for Angular!</h3>
-
-    <div class="card">
-      <button type="button" (click)="increment()">Count {{ count }}</button>
-    </div>
-
-    <p class="read-the-docs">
-      For guides on how to customize this project, visit the
-      <a href="https://analogjs.org" target="_blank">Analog documentation</a>
-    </p>
-  `,
-  styles: [
-    `
-      .logo {
-        will-change: filter;
-      }
-      .logo:hover {
-        filter: drop-shadow(0 0 2em #646cffaa);
-      }
-      .read-the-docs {
-        color: #888;
-      }
-    `,
-  ],
+  `
 })
 export default class HomeComponent {
-  count = 0;
 
-  increment() {
-    this.count++;
+  data = this.getData();
+  private tasks = inject(PendingTasks);
+
+  async getData() {
+    const myTask = this.tasks.add();
+    const r = await fetch('http://localhost:5173/api/hello', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+
+    });
+    const x = await r.json();
+    this.tasks.remove(myTask);
+    return x.message;
   }
+
 }
