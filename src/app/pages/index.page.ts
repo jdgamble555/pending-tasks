@@ -18,17 +18,16 @@ export default class HomeComponent {
 
   private pendingTasks = inject(ExperimentalPendingTasks);
   
-  private request = inject(REQUEST, {
-    optional: true,
-  });
+  protected readonly request = inject(REQUEST);
 
   data = this.getData();
 
-  // fetch data
+  // fetch data, will only run on server
   private async _getData() {
-    const host = this.request?.headers.referer;
-    const url = host || '/';
-    const r = await fetch(url + 'api/hello', {
+    const schema = isDevMode() ? 'http://' : 'https://';
+    const host = this.request.headers.host;
+    const url = schema + host + '/api/hello';
+    const r = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
       }
