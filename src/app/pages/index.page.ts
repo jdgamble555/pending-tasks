@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, ExperimentalPendingTasks, inject, InjectionToken, isDevMode } from '@angular/core';
+import { Component, ExperimentalPendingTasks, inject, isDevMode } from '@angular/core';
 import { REQUEST } from '@lib/request.token';
 import { useAsyncTransferState } from '@lib/utils';
 
