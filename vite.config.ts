@@ -18,10 +18,12 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [analog({
     nitro: {
-      preset: "vercel"
-    },
-    prerender: {
-      routes: ['/']
+      preset: "vercel",
+      routeRules: {
+        '/': {
+          prerender: false,
+        },
+      }
     }
   })],
   test: {
