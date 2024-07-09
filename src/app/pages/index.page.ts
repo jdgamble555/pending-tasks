@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { ɵPendingTasks as PendingTasks } from '@angular/core'
+import { Component, ExperimentalPendingTasks, inject } from '@angular/core';
+import { useAsyncTransferState } from '@lib/utils';
 
 
 @Component({
@@ -9,26 +9,33 @@ import { ɵPendingTasks as PendingTasks } from '@angular/core'
   imports: [AsyncPipe],
   template: `
     <div>
-      <p>testing 123 - {{ data | async }}</p>
+      <p class="font-bold">{{ data | async }}</p>
     </div>
   `
 })
 export default class HomeComponent {
 
-  data = this.getData();
-  private tasks = inject(PendingTasks);
+  private pendingTasks = inject(ExperimentalPendingTasks);
 
-  async getData() {
-    const myTask = this.tasks.add();
+  data = this.getData();
+
+  // fetch data
+  private async _getData() {
     const r = await fetch('http://localhost:5173/api/hello', {
       headers: {
         'Content-Type': 'application/json',
-      },
-
+      }
     });
     const x = await r.json();
-    this.tasks.remove(myTask);
     return x.message;
+  }
+
+  // fetch data with pending task and transfer state
+  async getData() {
+    const taskCleanup = this.pendingTasks.add();
+    const r = await useAsyncTransferState('pending', async () => await this._getData());
+    taskCleanup();
+    return r;
   }
 
 }

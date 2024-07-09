@@ -4,7 +4,7 @@ export default defineEventHandler(async () => {
 
     const x = new Promise((resolve) => setTimeout(() => {
         resolve({
-            message: "you man!"
+            message: "loaded from the server after 5 seconds!"
         });
     }, 5000));
 
