@@ -1,8 +1,7 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, ExperimentalPendingTasks, inject, isDevMode } from '@angular/core';
-import { useAsyncTransferState } from '@lib/utils';
-
+import { Component, ExperimentalPendingTasks, inject, InjectionToken, isDevMode } from '@angular/core';
 import { REQUEST } from '@lib/request.token';
+import { useAsyncTransferState } from '@lib/utils';
 
 
 @Component({
@@ -18,19 +17,18 @@ import { REQUEST } from '@lib/request.token';
 export default class HomeComponent {
 
   private pendingTasks = inject(ExperimentalPendingTasks);
-
-  data = this.getData();
   
-  protected readonly request = inject(REQUEST, {
+  private request = inject(REQUEST, {
     optional: true,
   });
 
+  data = this.getData();
+
   // fetch data
   private async _getData() {
-    const host = this.request?.get('host');
-    console.log(host);
-    const url = isDevMode() ? 'http://localhost:5173' : 'https://pending-tasks.vercel.app/';
-    const r = await fetch(url + '/api/hello', {
+    const host = this.request?.headers.referer;
+    const url = host || '/';
+    const r = await fetch(url + 'api/hello', {
       headers: {
         'Content-Type': 'application/json',
       }
