@@ -16,7 +16,11 @@ export default defineConfig(({ mode }) => ({
       '@lib': resolve(__dirname, './src/app/lib')
     }
   },
-  plugins: [analog()],
+  plugins: [analog({
+    nitro: {
+      preset: "vercel"
+    }
+  })],
   test: {
     globals: true,
     environment: 'jsdom',
