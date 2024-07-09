@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [analog({
     nitro: {
-      preset: "vercel",
+      preset: "vercel-edge",
       routeRules: {
         '/': {
           prerender: false,

@@ -1,5 +1,10 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, ExperimentalPendingTasks, inject, isDevMode } from '@angular/core';
+import {
+  Component,
+  ExperimentalPendingTasks as PendingTasks,
+  inject,
+  isDevMode
+} from '@angular/core';
 import { REQUEST } from '@lib/request.token';
 import { useAsyncTransferState } from '@lib/utils';
 
@@ -16,8 +21,8 @@ import { useAsyncTransferState } from '@lib/utils';
 })
 export default class HomeComponent {
 
-  private pendingTasks = inject(ExperimentalPendingTasks);
-  
+  private pendingTasks = inject(PendingTasks);
+
   protected readonly request = inject(REQUEST);
 
   data = this.getData();
