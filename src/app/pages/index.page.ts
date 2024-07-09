@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, ExperimentalPendingTasks, inject } from '@angular/core';
+import { Component, ExperimentalPendingTasks, inject, isDevMode } from '@angular/core';
 import { useAsyncTransferState } from '@lib/utils';
 
 
@@ -21,7 +21,8 @@ export default class HomeComponent {
 
   // fetch data
   private async _getData() {
-    const r = await fetch('http://localhost:5173/api/hello', {
+    const url = isDevMode() ? 'http://localhost:5173' : 'https://pending-tasks.vercel.app/';
+    const r = await fetch(url + '/api/hello', {
       headers: {
         'Content-Type': 'application/json',
       }
