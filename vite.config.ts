@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => ({
       preset: "vercel"
     },
     prerender: {
-      routes: []
+      routes: ['/']
     }
   })],
   test: {
